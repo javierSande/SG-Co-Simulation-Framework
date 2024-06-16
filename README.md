@@ -1,1 +1,1 @@
-# SG-Co-Simulation-Framework
+# Smart Grid Co-Simulation Framework
