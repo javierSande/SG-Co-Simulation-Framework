@@ -1,0 +1,6 @@
+[submodule "IEDs/Emulator-images/libs/libiec61850"]
+	path = IEDs/Emulator-images/libs/libiec61850
+	url = https://github.com/javierSande/libiec61850.git
+[submodule "IEDs/Emulator-images/libs/libsimlink"]
+	path = IEDs/Emulator-images/libs/libsimlink
+	url = https://github.com/javierSande/libsimlink.git

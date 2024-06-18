@@ -1,0 +1,604 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0201" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ns1="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="Unknown" productName="Unnamed" productVersion="1" creationDateTime="2024-04-18T11:01:11"/>
+  <contentHeader name="Unnamed" modificationDateTime="2024-06-12T22:05:40">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="10" y="10"/>
+      </fbd>
+      <ld>
+        <scaling x="10" y="10"/>
+      </ld>
+      <sfc>
+        <scaling x="10" y="10"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="metering" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="SM00VA" address="%IW0">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM00VB" address="%IW1">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM00VC" address="%IW2">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM00IA" address="%IW3">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM00IB" address="%IW4">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM00IC" address="%IW5">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM01VA" address="%IW10">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM01VB" address="%IW11">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM01VC" address="%IW12">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM01IA" address="%IW13">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM01IB" address="%IW14">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM01IC" address="%IW15">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM02VA" address="%IW20">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM02VB" address="%IW21">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM02VC" address="%IW22">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM02IA" address="%IW23">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM02IB" address="%IW24">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM02IC" address="%IW25">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM03VA" address="%IW30">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM03VB" address="%IW31">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM03VC" address="%IW32">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM03IA" address="%IW33">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM03IB" address="%IW34">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM03IC" address="%IW35">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM04VA" address="%IW40">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM04VB" address="%IW41">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM04VC" address="%IW42">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM04IA" address="%IW43">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM04IB" address="%IW44">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM04IC" address="%IW45">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM05VA" address="%IW50">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM05VB" address="%IW51">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM05VC" address="%IW52">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM05IA" address="%IW53">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM05IB" address="%IW54">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM05IC" address="%IW55">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM06VA" address="%IW60">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM06VB" address="%IW61">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM06VC" address="%IW62">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM06IA" address="%IW63">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM06IB" address="%IW64">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM06IC" address="%IW65">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM07VA" address="%IW70">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM07VB" address="%IW71">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM07VC" address="%IW72">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM07IA" address="%IW73">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM07IB" address="%IW74">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM07IC" address="%IW75">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM08VA" address="%IW80">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM08VB" address="%IW81">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM08VC" address="%IW82">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM08IA" address="%IW83">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM08IB" address="%IW84">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM08IC" address="%IW85">
+              <type>
+                <INT/>
+              </type>
+            </variable>
+            <variable name="SM00SecST" address="%IX0.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM01SecST" address="%IX0.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM02SecST" address="%IX0.2">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM03SecST" address="%IX0.3">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM04SecST" address="%IX0.4">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM05SecST" address="%IX0.5">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM06SecST" address="%IX0.6">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM07SecST" address="%IX0.7">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM08SecST" address="%IX1.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM09SecST" address="%IX1.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM10SecST" address="%IX1.2">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM11SecST" address="%IX1.3">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM12SecST" address="%IX1.4">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM13SecST" address="%IX1.5">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM14SecST" address="%IX1.6">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="SM15SecST" address="%IX1.7">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB00CST" address="%IX2.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB01CST" address="%IX2.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB02CST" address="%IX2.2">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB03CST" address="%IX2.3">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB04CST" address="%IX2.4">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB05CST" address="%IX2.5">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB06CST" address="%IX2.6">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB07CST" address="%IX2.7">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB08CST" address="%IX3.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB09CST" address="%IX3.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB10CST" address="%IX3.2">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB11CST" address="%IX3.3">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB12CST" address="%IX3.4">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB13CST" address="%IX3.5">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB14CST" address="%IX3.6">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB15CST" address="%IX3.7">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB00OpST" address="%QX0.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB01OpST" address="%QX0.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB02OpST" address="%QX0.2">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB03OpST" address="%QX0.3">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB04OpST" address="%QX0.4">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB05OpST" address="%QX0.5">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB06OpST" address="%QX0.6">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB07OpST" address="%QX0.7">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB08OpST" address="%QX1.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB09OpST" address="%QX1.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB10OpST" address="%QX1.2">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB11OpST" address="%QX1.3">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB12OpST" address="%QX1.4">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB13OpST" address="%QX1.5">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB14OpST" address="%QX1.6">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="CB15OpST" address="%QX1.7">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="Close">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <LD>
+            <leftPowerRail localId="1" width="10" height="40">
+              <position x="270" y="110"/>
+              <connectionPointOut formalParameter="">
+                <relPosition x="10" y="20"/>
+              </connectionPointOut>
+            </leftPowerRail>
+            <contact localId="4" negated="false" width="21" height="20">
+              <position x="360" y="120"/>
+              <connectionPointIn>
+                <relPosition x="0" y="10"/>
+                <connection refLocalId="1">
+                  <position x="360" y="130"/>
+                  <position x="280" y="130"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="10"/>
+              </connectionPointOut>
+              <variable>CB00OpST</variable>
+            </contact>
+            <coil localId="5" negated="true" width="21" height="20">
+              <position x="470" y="120"/>
+              <connectionPointIn>
+                <relPosition x="0" y="10"/>
+                <connection refLocalId="4">
+                  <position x="470" y="130"/>
+                  <position x="381" y="130"/>
+                </connection>
+              </connectionPointIn>
+              <connectionPointOut>
+                <relPosition x="21" y="10"/>
+              </connectionPointOut>
+              <variable>Close</variable>
+            </coil>
+            <rightPowerRail localId="6" width="10" height="40">
+              <position x="550" y="110"/>
+              <connectionPointIn>
+                <relPosition x="0" y="20"/>
+                <connection refLocalId="5">
+                  <position x="550" y="130"/>
+                  <position x="491" y="130"/>
+                </connection>
+              </connectionPointIn>
+            </rightPowerRail>
+          </LD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="Config0">
+        <resource name="Res0">
+          <task name="task0" priority="0" interval="T#20ms">
+            <pouInstance name="instance0" typeName="metering"/>
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>
