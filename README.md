@@ -10,6 +10,14 @@ The network chosen for our simulation is the IEEE- 14 test grid, a standard test
   <img src="https://github.com/javierSande/SG-Co-Simulation-Framework/blob/main/images/Grid.png" width="600">
 </p>
 
+To simulate this model, follow these steps:
+
+1. Open the folder [Physical-Model/IEEE14 Smart Grid](https://github.com/javierSande/SG-Co-Simulation-Framework/tree/main/Physical-Model/IEEE14%20Smart%20Grid) Smart Grid in MATLAB.
+
+2. Next, open and run the file [slblocks.m](https://github.com/javierSande/SG-Co-Simulation-Framework/blob/main/Physical-Model/IEEE14%20Smart%20Grid/slblocks.m) to load some custom blocks for the model.
+
+3. Finally, open the file [Ieee14_CC.slx](https://github.com/javierSande/SG-Co-Simulation-Framework/blob/main/Physical-Model/IEEE14%20Smart%20Grid/Ieee14_CC.slx) with Simulink.
+
 ### Smart Meter and Circuit Breaker
 
 Given the challenges and limitations of integrating new functionalities and communication protocols directly into Simulink, our approach divides the emulation of IEDs into two essential components. The physical com- ponent, responsible for tasks such as reading line values (in the case of a smart meter) or controlling the electricity flow (as with a circuit breaker), is implemented as a [MATLAB/Simulink subsystem](https://es.mathworks.com/help/simulink/subsystems.html).
