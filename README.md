@@ -138,3 +138,12 @@ In our experiments, simulations were executed using a computer running Simulink 
 <p align="center">
   <img src="https://github.com/javierSande/SG-Co-Simulation-Framework/blob/main/images/HW.png" width="400">
 </p>
+
+## References
+
+For the creation of this project, the following open-source projects have been employed:
+
+* [OpenPLC61850](https://github.com/smartgridadsc/OpenPLC61850)
+* [OpenPLC](https://autonomylogic.com)
+* [SCADA BR](https://github.com/ScadaBR)
+* [libiec61850](https://libiec61850.com)
