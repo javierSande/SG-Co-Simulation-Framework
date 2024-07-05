@@ -62,8 +62,8 @@ Prior to the execution of the IEDs we need to build the docker images:
 
 ```
 cd IEDs/Emulator-images/
-docker build -f /circuitBreaker/Dockerfile -t circuitbreaker:latest .
-docker build -f /smartMeter/Dockerfile -t smartmeter:latest .
+docker build -f ./circuitBreaker/Dockerfile -t circuitbreaker:latest .
+docker build -f ./smartMeter/Dockerfile -t smartmeter:latest .
 ```
 
 To run our containers, we have two options.
