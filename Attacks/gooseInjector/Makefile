@@ -1,4 +1,4 @@
-LIBIEC_HOME=../libiec61850
+LIBIEC_HOME=./libiec61850
 
 PROJECT_BINARY_NAME = gooseInjector
 PROJECT_SOURCES = gooseInjector.c
