@@ -4,3 +4,6 @@
 [submodule "IEDs/Emulator-images/libs/libsimlink"]
 	path = IEDs/Emulator-images/libs/libsimlink
 	url = https://github.com/javierSande/libsimlink.git
+[submodule "Attacks/gooseInjector/libiec61850"]
+	path = Attacks/gooseInjector/libiec61850
+	url = https://github.com/mz-automation/libiec61850.git
