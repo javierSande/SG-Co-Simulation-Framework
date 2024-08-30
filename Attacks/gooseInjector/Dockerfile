@@ -13,8 +13,11 @@ RUN git clone -b int16support https://github.com/javierSande/libiec61850.git && 
     cd libiec61850 && \
     make
 
+# Install the necessary dependencies
+COPY libs/ .
+
 # Copy the source code into the container
-COPY . .
+COPY gooseInjector/* .
 
 # Compile the libraries
 RUN make
