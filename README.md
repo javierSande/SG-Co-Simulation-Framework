@@ -72,7 +72,7 @@ First option is to run an IED independently:
 
 1. Create the IPvlan network:
    ```
-   docker network create -d ipvlan --subnet=10.0.0.0/16 --gateway=10.0.0.1 -o ipvlan_mode=l2 transportNetwork
+   docker network create -d ipvlan --subnet=10.0.0.0/16 --gateway=10.0.0.1 -o ipvlan_mode=l2 -o parent=eth0 transportNetwork
    ```
 2. Run the IED container.
   * For th smart meter:
