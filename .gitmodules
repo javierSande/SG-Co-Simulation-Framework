@@ -1,9 +1,9 @@
 [submodule "IEDs/Emulator-images/libs/libiec61850"]
 	path = IEDs/Emulator-images/libs/libiec61850
-	url = https://github.com/javierSande/libiec61850.git
+	url = https://github.com/CIARRES/libiec61850.git
 [submodule "IEDs/Emulator-images/libs/libsimlink"]
 	path = IEDs/Emulator-images/libs/libsimlink
-	url = https://github.com/javierSande/libsimlink.git
+	url = https://github.com/CIARRES/libsimlink.git
 [submodule "Attacks/libs/libiec61850"]
 	path = Attacks/libs/libiec61850
 	url = https://github.com/mz-automation/libiec61850.git
