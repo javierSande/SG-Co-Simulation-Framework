@@ -78,12 +78,12 @@ First option is to run an IED independently:
   * For th smart meter:
      ```
       docker run -id --name smartmeter<id> \
-        --network transportNetwork --ip 10.0.100.1 \
+        --network transportNetwork --ip <ip> \
         -e SM_ID=<id> \
-        -e SM_IP=<ip> \
+        -e e<ip> \
         -e SM_GATEWAY=10.0.0.1 \
         -e S_IP=<Simulink ip> \
-        -e S_PORTV=<Line A voltage port> -e S_PORTI=<Line A current port> \
+        -e S_DATA_PORT=<Data port> \
         -e SAFE_THRESHOLD=500 \
         smartmeter:latest
      ```

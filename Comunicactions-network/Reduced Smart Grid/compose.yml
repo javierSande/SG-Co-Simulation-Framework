@@ -1,0 +1,137 @@
+services:
+
+  smartmeter1:
+    image: smartmeter:latest
+    environment:
+      - SM_ID=1
+      - SM_IP=10.0.1.1
+      - SM_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_DATA_PORT=10001
+      - SAFE_THRESHOLD=500
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.1.1
+
+  circuitbreaker1:
+    image: circuitbreaker:latest
+    environment:
+      - CB_ID=1
+      - CB_IP=10.0.1.2
+      - CB_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_PORT=30001
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.1.2
+
+  smartmeter2:
+    image: smartmeter:latest
+    environment:
+      - SM_ID=2
+      - SM_IP=10.0.2.1
+      - SM_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_DATA_PORT=10002
+      - SAFE_THRESHOLD=500
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.2.1
+
+  circuitbreaker2:
+    image: circuitbreaker:latest
+    environment:
+      - CB_ID=2
+      - CB_IP=10.0.2.2
+      - CB_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_PORT=30002
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.2.2
+
+  smartmeter3:
+    image: smartmeter:latest
+    environment:
+      - SM_ID=3
+      - SM_IP=10.0.3.1
+      - SM_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_DATA_PORT=10003
+      - SAFE_THRESHOLD=500
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.3.1
+
+  circuitbreaker3:
+    image: circuitbreaker:latest
+    environment:
+      - CB_ID=3
+      - CB_IP=10.0.3.2
+      - CB_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_PORT=30003
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.3.2
+
+  smartmeter4:
+    image: smartmeter:latest
+    environment:
+      - SM_ID=4
+      - SM_IP=10.0.4.1
+      - SM_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_DATA_PORT=10004
+      - SAFE_THRESHOLD=500
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.4.1
+
+  circuitbreaker4:
+    image: circuitbreaker:latest
+    environment:
+      - CB_ID=4
+      - CB_IP=10.0.4.2
+      - CB_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_PORT=30004
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.4.2
+
+  smartmeter5:
+    image: smartmeter:latest
+    environment:
+      - SM_ID=5
+      - SM_IP=10.0.5.1
+      - SM_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_DATA_PORT=10005
+      - SAFE_THRESHOLD=500
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.5.1
+
+  circuitbreaker5:
+    image: circuitbreaker:latest
+    environment:
+      - CB_ID=5
+      - CB_IP=10.0.5.2
+      - CB_GATEWAY=10.0.0.1
+      - S_IP=10.0.0.2
+      - S_PORT=30005
+    networks:
+      transportNetwork:
+        ipv4_address: 10.0.5.2
+
+networks:
+  transportNetwork:
+    driver: ipvlan
+    driver_opts:
+      parent: eth0
+      ipvlan_mode: l2
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16
+          gateway: 10.0.0.1

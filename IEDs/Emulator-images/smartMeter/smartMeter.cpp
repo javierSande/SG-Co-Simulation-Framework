@@ -1,29 +1,23 @@
-#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
-#include <pthread.h>
-#include <signal.h>
-#include <cstdint>
+#include "smartMeter.h"
 
-#include <simlink.h>
-
+#include "simlink.h"
 #include "hal_thread.h"
 #include "static_model.h"
 #include "iec61850_server.h"
 #include "ladder.h"
 
-#define GOOSE_INTERFACE "eth0"
-
-SimLinkModel model;
+SmartMeterModel* model;
 
 IedServer iedServer = NULL;
 
 static int running = 0;
 
-bool* safeCircuit = NULL;
-
 char config_file[128];
+
+void sigint_handler(int signalId)
+{
+    running = 0;
+}
 
 void
 sleep_mss(int milliseconds)
@@ -145,46 +139,52 @@ closeMMSServer()
 }
 
 void
-update_server(uint64_t timestamp, SimLinkModel* model) {
+update_server(uint64_t timestamp, SmartMeterModel* model) {
+
+    pthread_mutex_lock(model->data.dataLock);
+
+    double vA = model->data.voltages[0];
+    double vB = model->data.voltages[1];
+    double vC = model->data.voltages[2];
+
+    double iA = model->data.currents[0];
+    double iB = model->data.currents[1];
+    double iC = model->data.currents[2];
+    pthread_mutex_unlock(model->data.dataLock);
 
     Timestamp iecTimestamp;
-
     Timestamp_clearFlags(&iecTimestamp);
     Timestamp_setTimeInMilliseconds(&iecTimestamp, timestamp);
     Timestamp_setLeapSecondKnown(&iecTimestamp, true);
 
     IedServer_lockDataModel(iedServer);
-    pthread_mutex_lock(&model->lock);
-
     IedServer_updateTimestampAttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnVA_t, &iecTimestamp);
-    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnVA_mag_f, model->stationsData->analogIn[0]);
+    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnVA_mag_f, (int16_t)vA);
 
     IedServer_updateTimestampAttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnVB_t, &iecTimestamp);
-    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnVB_mag_f, model->stationsData->analogIn[1]);
+    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnVB_mag_f, (int16_t)vB);
 
     IedServer_updateTimestampAttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnVC_t, &iecTimestamp);
-    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnVC_mag_f, model->stationsData->analogIn[2]);
+    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnVC_mag_f, (int16_t)vC);
 
     IedServer_updateTimestampAttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnIA_t, &iecTimestamp);
-    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnIA_mag_f, model->stationsData->analogIn[3]);
+    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnIA_mag_f, (int16_t)iA);
 
     IedServer_updateTimestampAttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnIB_t, &iecTimestamp);
-    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnIB_mag_f, model->stationsData->analogIn[4]);
+    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnIB_mag_f, (int16_t)iB);
 
     IedServer_updateTimestampAttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnIC_t, &iecTimestamp);
-    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnIC_mag_f, model->stationsData->analogIn[5]);
+    IedServer_updateInt16AttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_AnIC_mag_f, (int16_t)iC);
 
     IedServer_updateTimestampAttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_SecurityST_t, &iecTimestamp);
-    IedServer_updateBooleanAttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_SecurityST_stVal, *safeCircuit);
-
-    pthread_mutex_unlock(&model->lock);
+    IedServer_updateBooleanAttributeValue(iedServer, IEDMODEL_LogicalDevice_GGIO1_SecurityST_stVal, model->data.safeState);
     IedServer_unlockDataModel(iedServer);
 }
 
 void
 *exchangeMMSData(void *args)
 {
-    SimLinkModel* model = (SimLinkModel*)args;
+    SmartMeterModel* model = (SmartMeterModel*)args;
     struct timespec timer_start;
     clock_gettime(CLOCK_MONOTONIC, &timer_start);
 
@@ -198,118 +198,148 @@ void
     }
 }
 
+/*
+* MATLAB/Simulink interface methods
+*/
+
+SimLinkModel*
+createSimlinkModel(SmartMeterModel* model)
+{
+    SimLinkModel* simModel = (SimLinkModel*)malloc(sizeof(SimLinkModel));
+
+    strncpy(simModel->simulinkIp, model->ip, IP_SIZE);
+    simModel->numStations = 1;
+    simModel->commDelay = 250;
+
+    // Create station
+    simModel->stationsInfo = (StationInfo *)malloc(simModel->numStations * sizeof(StationInfo));
+    simModel->stationsInfo->genericInPorts[0] = model->dataPort;
+
+    // Create data buffers
+    simModel->stationsData = (StationData *)malloc(simModel->numStations * sizeof(StationData));
+    simModel->stationsData->genericIn[0].count = 2 * THREE_PHASES;
+    simModel->stationsData->genericIn[0].itemSize = sizeof(double);
+    simModel->stationsData->genericIn[0].maxSize = 2 * THREE_PHASES * sizeof(double);
+    simModel->stationsData->genericIn[0].data = (double *)malloc(2 * THREE_PHASES * sizeof(double));
+
+    // Link data buffers
+    model->data.voltages = (double*)simModel->stationsData->genericIn[0].data;
+    model->data.currents = (double*)(simModel->stationsData->genericIn[0].data + THREE_PHASES * sizeof(double));
+
+    // Create and link mutex
+    pthread_mutex_init(&simModel->lock, NULL);
+    model->data.dataLock = &simModel->lock;
+
+    return simModel;
+}
+
 void 
 *displayData(void *args)
 {
     char* iedName = (char*)args;
     while(running)
     {
-        pthread_mutex_lock(&model.lock);
+        pthread_mutex_lock(model->data.dataLock);
         printf("%s:\n", iedName);
-        printf("\tVoltage: %d\t\t%d\t\t%d\n", model.stationsData[0].analogIn[0], model.stationsData[0].analogIn[1], model.stationsData[0].analogIn[2]);
-        printf("\tCurrent: %d\t\t%d\t\t%d\n", model.stationsData[0].analogIn[3], model.stationsData[0].analogIn[4], model.stationsData[0].analogIn[5]);
-        printf("\tSafe: %d\n", *safeCircuit);
-        pthread_mutex_unlock(&model.lock);
+        printf("\tVoltage: %f\t\t%f\t\t%f\n", model->data.voltages[0], model->data.voltages[1], model->data.voltages[2]);
+        printf("\tCurrent: %f\t\t%f\t\t%f\n", model->data.currents[0], model->data.currents[1], model->data.currents[2]);
+        printf("\tSafe: %d\n", model->data.safeState);
+        pthread_mutex_unlock(model->data.dataLock);
 
-        sleep_mss(3000);
+        sleep_mss(1000);
     }
 }
 
 int main(int argc, char* argv[]) {
 
-    /* Parse parameters */
-    if (argc != 6) {
-        std::cerr << "Usage: " << argv[0] << " <SM_ID> <Simulink_IP> <Port_V> <Port_I> <safe_threshold>" << std::endl;
+    /* Create model and parse parameters */
+
+    if (argc < 5 || argc > 6) {
+        std::cerr << "Usage: " << argv[0] << " <SM_ID> <Simulink_IP> <DataPort> <safe_threshold> [<GOOSE_interface>]" << std::endl;
         return 1;
     }
 
-    int smId = atoi(argv[1]);
-    const char* simulinkIp = argv[2];
-    const int simulinkPortV = atoi(argv[3]);
-    const int simulinkPortI = atoi(argv[4]);
-    const int safeThreshold = atoi(argv[5]);
+    model = (SmartMeterModel*)malloc(sizeof(SmartMeterModel));
+    model->id = (int16_t)atoi(argv[1]);
+    model->ip = (char*)malloc(IP_SIZE * sizeof(char));
+    strncpy(model->ip, argv[2], IP_SIZE);
 
-    printf("Using GOOSE interface: %s\n", GOOSE_INTERFACE);
+    model->dataPort = (int16_t)atoi(argv[3]);
+    model->data.dataLock = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
+
+    model->safetyThreshold = (int16_t)atoi(argv[4]);
+    model->goose_interface = (char*)malloc(INTERFACE_SIZE * sizeof(char));
+
+    if (argc == 6)
+        strncpy(model->goose_interface, argv[5], INTERFACE_SIZE);
+    else
+        strncpy(model->goose_interface, DEF_GOOSE_INTERFACE, INTERFACE_SIZE);
+
+    printf("Using GOOSE interface: %s\n", model->goose_interface);
+
+    model->data.currents = NULL;
+    model->data.voltages = NULL;
+    model->data.safeState = true;
+
+    /* Create Simulink model */
+
+    SimLinkModel* simLinkModel = createSimlinkModel(model);
 
     /* Setup iec61850 MMS server */
-    int port = 102;
-    setUpMMSServer(port, GOOSE_INTERFACE);
+
+    setUpMMSServer(MMS_PORT, model->goose_interface);
 
     if (!IedServer_isRunning(iedServer)) {
         printf("Error: Could not setup MMS server\n");
         IedServer_destroy(iedServer);
-        exit(-1);
+        running = 0;
+        return 1;
     }
-
-    /* Setup Simulink model */
-
-    strncpy(model.simulinkIp, simulinkIp, 100);
-    model.numStations = 1;
-    model.commDelay = 250;
-
-    model.stationsData = (StationData *)malloc(model.numStations * sizeof(StationData));
-    model.stationsInfo = (StationInfo *)malloc(model.numStations * sizeof(StationInfo));
-
-    // Voltage ports
-    model.stationsInfo[0].analogInPorts[0] = simulinkPortV;
-    model.stationsInfo[0].analogInPorts[1] = simulinkPortV + 1;
-    model.stationsInfo[0].analogInPorts[2] = simulinkPortV + 2;
-
-    // Current ports
-    model.stationsInfo[0].analogInPorts[3] = simulinkPortI;
-    model.stationsInfo[0].analogInPorts[4] = simulinkPortI + 1;
-    model.stationsInfo[0].analogInPorts[5] = simulinkPortI + 2;
-
-    safeCircuit = &model.stationsData[0].digitalOut[0];
-
-    *safeCircuit = true;
-
-    /* Display info */
-    displayInfo(&model);
 
     /* Start data exchange */
 
     running = 1;
+    signal(SIGINT, sigint_handler);
 
-    //signal(SIGINT, sigint_handler);
-
-    exchangeDataWithSimulink(&model);
+    exchangeDataWithSimulink(simLinkModel);
 
     pthread_t receivingThread;
-    pthread_create(&receivingThread, NULL, exchangeMMSData, &model);
+    pthread_create(&receivingThread, NULL, exchangeMMSData, model);
 
     /* Display data */
     char smName[10];
-    snprintf(smName, 10, "SM%02d", smId);
+    snprintf(smName, 10, "SM%02d", model->id);
 
     pthread_t displayThread;
     pthread_create(&displayThread, NULL, displayData, (void*)smName);
 
+
     int safetyCounter = 0;
+
     /* Update data */
     while(running)
     {
-        pthread_mutex_lock(&model.lock);
+        pthread_mutex_lock(model->data.dataLock);
 
-        int16_t iA = model.stationsData->analogIn[3];
-        int16_t iB = model.stationsData->analogIn[4];
-        int16_t iC = model.stationsData->analogIn[5];
+        double iA = model->data.currents[0];
+        double iB = model->data.currents[1];
+        double iC = model->data.currents[2];
 
-        bool newState = !(iA > safeThreshold || iB > safeThreshold || iC > safeThreshold);
+        bool newState = !(iA > model->safetyThreshold || iB > model->safetyThreshold || iC > model->safetyThreshold);
 
-        if (!*safeCircuit && newState && safetyCounter < 3)
+        if (!model->data.safeState && newState && safetyCounter < 3)
         {
             safetyCounter++;
         }
         else
         {
-            *safeCircuit = newState;
+            model->data.safeState = newState;
             safetyCounter = 0;
         }
-        pthread_mutex_unlock(&model.lock);
+        pthread_mutex_unlock(model->data.dataLock);
 
         // In case of unsafe circuit, wait for 3s to stabilize
-        if (!*safeCircuit)
+        if (!model->data.safeState)
             sleep_mss(3000);
 
         sleep_mss(1000);
