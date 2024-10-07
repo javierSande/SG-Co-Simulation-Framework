@@ -88,18 +88,6 @@ services:
       transportNetwork:
         ipv4_address: 10.0.4.1
 
-  circuitbreaker4:
-    image: circuitbreaker:latest
-    environment:
-      - CB_ID=4
-      - CB_IP=10.0.4.2
-      - CB_GATEWAY=10.0.0.1
-      - S_IP=10.0.0.2
-      - S_PORT=30004
-    networks:
-      transportNetwork:
-        ipv4_address: 10.0.4.2
-
   smartmeter5:
     image: smartmeter:latest
     environment:
@@ -112,18 +100,6 @@ services:
     networks:
       transportNetwork:
         ipv4_address: 10.0.5.1
-
-  circuitbreaker5:
-    image: circuitbreaker:latest
-    environment:
-      - CB_ID=5
-      - CB_IP=10.0.5.2
-      - CB_GATEWAY=10.0.0.1
-      - S_IP=10.0.0.2
-      - S_PORT=30005
-    networks:
-      transportNetwork:
-        ipv4_address: 10.0.5.2
 
 networks:
   transportNetwork:
